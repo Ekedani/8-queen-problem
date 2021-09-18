@@ -20,7 +20,7 @@ public:
 
     int heuristicCalc();
 
-    //TODO: Implement bool method isSolved for increasing efficiency
+    bool isSolved();
 };
 
 class solutionTree {

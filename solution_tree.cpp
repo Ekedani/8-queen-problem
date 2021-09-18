@@ -42,3 +42,20 @@ int solutionNode::heuristicCalc() {
     }
     return pairsInConflict;
 }
+
+bool solutionNode::isSolved() {
+    bool noConflicts = true;
+    for (auto queenNum = 0; queenNum < state.size(); ++queenNum) {
+        for (auto queenNext = queenNum + 1; queenNext < state.size(); ++queenNext) {
+            //Checking vertical conflict
+            noConflicts &= state[queenNum].first != state[queenNext].first;
+            //Checking diagonal conflict
+            noConflicts &= (state[queenNum].first - state[queenNext].first) ==
+                           (state[queenNum].second - state[queenNext].second);
+            if(!noConflicts){
+                break;
+            }
+        }
+    }
+    return noConflicts;
+}
