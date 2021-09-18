@@ -12,48 +12,15 @@ private:
     //Possible to add "action" attribute for more obvious path
 
 public:
-    explicit solutionNode(vector<pair<short, short>> &startState) {
-        this->state = startState;
-        this->depth = 0;
-        this->parentNode = nullptr;
-    }
+    explicit solutionNode(vector<pair<short, short>> &startState);
 
-    solutionNode(solutionNode &parentNode) {
-        this->state = parentNode.state;
-        this->depth = parentNode.depth + 1;
-        this->parentNode = &parentNode;
-    }
+    solutionNode(solutionNode &parentNode);
 
-    void generateChildrenNodes() {
-        for (auto queenNum = 0; queenNum < state.size(); queenNum++) {
-            for (auto x = 0; x < state.size(); x++) {
-                //Horizontal movement (Changing first coordinate)
-                if (x == state[queenNum].first) {
-                    //Skipping the parent state
-                    continue;
-                }
-                auto newChild = new solutionNode(*this);
-                newChild->state[queenNum].first = x;
-                this->childrenNodes.push_back(newChild);
-            }
-        }
-    }
+    void generateChildrenNodes();
 
-    int heuristicCalc() {
-        int pairsInConflict = 0;
-        for (auto queenNum = 0; queenNum < state.size(); ++queenNum) {
-            for (auto queenNext = queenNum + 1; queenNext < state.size(); ++queenNext) {
-                bool notInConflict = true;
-                //Checking vertical conflict
-                notInConflict &= state[queenNum].first != state[queenNext].first;
-                //Checking diagonal conflict
-                notInConflict &= (state[queenNum].first - state[queenNext].first) ==
-                                 (state[queenNum].second - state[queenNext].second);
-                pairsInConflict += notInConflict;
-            }
-        }
-        return pairsInConflict;
-    }
+    int heuristicCalc();
+
+    //TODO: Implement bool method isSolved for increasing efficiency
 };
 
 class solutionTree {
