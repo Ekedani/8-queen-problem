@@ -1,5 +1,6 @@
 #include <vector>
 #include <utility>
+#include "iostream"
 
 using namespace std;
 
@@ -21,13 +22,41 @@ public:
     int heuristicCalc();
 
     bool isSolved();
+
+    [[nodiscard]] int getDepth() const;
+
+    [[nodiscard]] solutionNode *getParentNode() const;
+
+    [[nodiscard]] vector<pair<short, short>> getState() const;
+
+    [[nodiscard]] vector<solutionNode *> getChildrenNodes() const;
+
+    void debugStateOut(){
+        for(auto queen : state){
+            cout << '{' << queen.first << ',' << queen.second << "}, ";
+        }
+        cout << '\n';
+    };
 };
 
 class solutionTree {
 private:
     solutionNode *rootNode;
-    const short QUEEN_AMOUNT;
+    short queenAmount;
+
+    //Methods for IDS
 public:
+    vector<pair<short, short>> findSolutionDLS(int depthLimit);
+
+    vector<pair<short, short>> recursiveDLS(int depthLimit, solutionNode *curNode);
+
+    void emptyTree() {
+
+    }
+
+public:
+    explicit solutionTree(solutionNode* rootNode);
+
     vector<pair<short, short>> findSolutionIDS() {
 
     }

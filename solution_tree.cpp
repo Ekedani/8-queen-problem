@@ -35,8 +35,8 @@ int solutionNode::heuristicCalc() {
             //Checking vertical conflict
             notInConflict &= state[queenNum].first != state[queenNext].first;
             //Checking diagonal conflict
-            notInConflict &= (state[queenNum].first - state[queenNext].first) ==
-                             (state[queenNum].second - state[queenNext].second);
+            notInConflict &= abs(state[queenNum].first - state[queenNext].first) ==
+                             abs(state[queenNum].second - state[queenNext].second);
             pairsInConflict += notInConflict;
         }
     }
@@ -45,17 +45,73 @@ int solutionNode::heuristicCalc() {
 
 bool solutionNode::isSolved() {
     bool noConflicts = true;
-    for (auto queenNum = 0; queenNum < state.size(); ++queenNum) {
-        for (auto queenNext = queenNum + 1; queenNext < state.size(); ++queenNext) {
+    for (auto queenNum = 0; queenNum < state.size() && noConflicts; ++queenNum) {
+        for (auto queenNext = queenNum + 1; queenNext < state.size() && noConflicts; ++queenNext) {
             //Checking vertical conflict
             noConflicts &= state[queenNum].first != state[queenNext].first;
             //Checking diagonal conflict
-            noConflicts &= (state[queenNum].first - state[queenNext].first) ==
-                           (state[queenNum].second - state[queenNext].second);
-            if(!noConflicts){
-                break;
-            }
+            noConflicts &= abs(state[queenNum].first - state[queenNext].first) !=
+                           abs(state[queenNum].second - state[queenNext].second);
         }
     }
     return noConflicts;
+}
+
+int solutionNode::getDepth() const {
+    return depth;
+}
+
+solutionNode *solutionNode::getParentNode() const {
+    return parentNode;
+}
+
+vector<pair<short, short>> solutionNode::getState() const {
+    return state;
+}
+
+vector<solutionNode *> solutionNode::getChildrenNodes() const {
+    return childrenNodes;
+}
+
+vector<pair<short, short>> solutionTree::findSolutionDLS(int depthLimit) {
+    if (rootNode->isSolved()) {
+        return rootNode->getState();
+    } else {
+        if (rootNode->getDepth() < depthLimit) {
+            rootNode->generateChildrenNodes();
+            vector<solutionNode *> curChildren = rootNode->getChildrenNodes();
+            for (auto node : curChildren) {
+                vector<pair<short, short>> solution = recursiveDLS(depthLimit, node);
+                if (!solution.empty()) {
+                    return solution;
+                }
+            }
+        }
+        vector<pair<short, short>> noSolution;
+        return noSolution;
+    }
+}
+
+vector<pair<short, short>> solutionTree::recursiveDLS(int depthLimit, solutionNode *curNode) {
+    if (curNode->isSolved()) {
+        return curNode->getState();
+    } else {
+        if (curNode->getDepth() < depthLimit) {
+            curNode->generateChildrenNodes();
+            vector<solutionNode *> curChildren = curNode->getChildrenNodes();
+            for (auto node : curChildren) {
+                vector<pair<short, short>> solution = recursiveDLS(depthLimit, node);
+                if (!solution.empty()) {
+                    return solution;
+                }
+            }
+        }
+        vector<pair<short, short>> noSolution;
+        return noSolution;
+    }
+}
+
+solutionTree::solutionTree(solutionNode *rootNode) {
+    this->rootNode = rootNode;
+    this->queenAmount = rootNode->getState().size();
 }
