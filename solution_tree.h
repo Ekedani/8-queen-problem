@@ -31,8 +31,8 @@ public:
 
     [[nodiscard]] vector<solutionNode *> getChildrenNodes() const;
 
-    void debugStateOut(){
-        for(auto queen : state){
+    void debugStateOut() {
+        for (auto queen : state) {
             cout << '{' << queen.first << ',' << queen.second << "}, ";
         }
         cout << '\n';
@@ -50,12 +50,8 @@ public:
 
     vector<pair<short, short>> recursiveDLS(int depthLimit, solutionNode *curNode);
 
-    void emptyTree() {
-
-    }
-
 public:
-    explicit solutionTree(solutionNode* rootNode);
+    explicit solutionTree(solutionNode *rootNode);
 
     vector<pair<short, short>> findSolutionIDS();
 

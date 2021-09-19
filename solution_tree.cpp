@@ -118,9 +118,9 @@ solutionTree::solutionTree(solutionNode *rootNode) {
 }
 
 vector<pair<short, short>> solutionTree::findSolutionIDS() {
-    for(int depthLimit = 0; depthLimit < INT_MAX; depthLimit++){
+    for (int depthLimit = 0; depthLimit < INT_MAX; depthLimit++) {
         auto solution = findSolutionDLS(depthLimit);
-        if(!solution.empty()){
+        if (!solution.empty()) {
             return solution;
         }
     }
