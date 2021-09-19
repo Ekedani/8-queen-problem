@@ -106,6 +106,7 @@ vector<pair<short, short>> solutionTree::recursiveDLS(int depthLimit, solutionNo
                 }
             }
         }
+        delete curNode;
         vector<pair<short, short>> noSolution;
         return noSolution;
     }
@@ -114,4 +115,13 @@ vector<pair<short, short>> solutionTree::recursiveDLS(int depthLimit, solutionNo
 solutionTree::solutionTree(solutionNode *rootNode) {
     this->rootNode = rootNode;
     this->queenAmount = rootNode->getState().size();
+}
+
+vector<pair<short, short>> solutionTree::findSolutionIDS() {
+    for(int depthLimit = 0; depthLimit < INT_MAX; depthLimit++){
+        auto solution = findSolutionDLS(depthLimit);
+        if(!solution.empty()){
+            return solution;
+        }
+    }
 }

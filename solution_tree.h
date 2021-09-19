@@ -57,9 +57,7 @@ public:
 public:
     explicit solutionTree(solutionNode* rootNode);
 
-    vector<pair<short, short>> findSolutionIDS() {
-
-    }
+    vector<pair<short, short>> findSolutionIDS();
 
     vector<pair<short, short>> findSolutionRBFS() {
 
