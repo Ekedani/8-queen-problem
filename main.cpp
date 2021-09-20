@@ -3,19 +3,13 @@
 
 int main() {
     vector<pair<short, short>> debugSolution;
-    vector<pair<short, short>> debugStart{{1, 0},
-                                          {1, 1},
-                                          {1, 2},
-                                          {1, 3}};
+    vector<pair<short, short>> debugStart{{0, 0}, {0, 1}, {0, 2}, {0, 3}, {0, 4}, {0, 5}, {0, 6}, {0, 7}};
     auto debugRoot = new solutionNode(debugStart);
-    std::cout << debugRoot->isSolved() << '\n';
+    debugRoot->heuristicCalc();
     auto debugTree = new solutionTree(debugRoot);
-    auto debugResult = debugTree->findSolutionIDS();
-    cout << debugResult.size();
-    cout << '\n';
-    for(auto queen : debugResult){
-        cout << queen.first << "-" << queen.second << ',';
+    auto result = debugTree->findSolutionRBFS();
+    for (auto queen : result) {
+        cout << queen.first << " and " << queen.second << '\n';
     }
-    cout << '\n';
     return 0;
 }

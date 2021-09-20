@@ -13,6 +13,7 @@ solutionNode::solutionNode(solutionNode &parentNode) {
 }
 
 void solutionNode::generateChildrenNodes() {
+    this->childrenNodes.clear();
     for (auto queenNum = 0; queenNum < state.size(); queenNum++) {
         for (auto x = 0; x < state.size(); x++) {
             //Horizontal movement (Changing first coordinate)
@@ -35,11 +36,12 @@ int solutionNode::heuristicCalc() {
             //Checking vertical conflict
             notInConflict &= state[queenNum].first != state[queenNext].first;
             //Checking diagonal conflict
-            notInConflict &= abs(state[queenNum].first - state[queenNext].first) ==
+            notInConflict &= abs(state[queenNum].first - state[queenNext].first) !=
                              abs(state[queenNum].second - state[queenNext].second);
-            pairsInConflict += notInConflict;
+            pairsInConflict += !notInConflict;
         }
     }
+    this->heuristicRBFS = pairsInConflict + depth;
     return pairsInConflict;
 }
 
@@ -71,6 +73,14 @@ vector<pair<short, short>> solutionNode::getState() const {
 
 vector<solutionNode *> solutionNode::getChildrenNodes() const {
     return childrenNodes;
+}
+
+int solutionNode::getHeuristicRBFS() const {
+    return heuristicRBFS;
+}
+
+void solutionNode::setHeuristicRBFS(int heuristicRbfs) {
+    heuristicRBFS = heuristicRbfs;
 }
 
 vector<pair<short, short>> solutionTree::findSolutionDLS(int depthLimit) {
