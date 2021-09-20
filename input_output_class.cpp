@@ -5,7 +5,7 @@
 #include "input_output_class.h"
 
 void inputOutputClass::outputTable(const vector<pair<short, short>> &result) {
-    char **boardVisualization = new char*[result.size()];
+    char **boardVisualization = new char *[result.size()];
     for (int i = 0; i < result.size(); ++i) {
         boardVisualization[i] = new char[result.size()];
         for (int j = 0; j < result.size(); ++j) {
@@ -27,9 +27,10 @@ vector<pair<short, short>> inputOutputClass::generateRandomQueens(short numOfQue
     srand(time(nullptr));
     vector<pair<short, short>> result;
     for (int i = 0; i < numOfQueens; ++i) {
-        pair<short, short> tmpPair {(rand() % numOfQueens), i};
+        pair<short, short> tmpPair{(rand() % numOfQueens), i};
         result.push_back(tmpPair);
     }
+    return result;
 }
 
 vector<pair<short, short>> inputOutputClass::userInputQueens(short numOfQueens) {
@@ -38,13 +39,14 @@ vector<pair<short, short>> inputOutputClass::userInputQueens(short numOfQueens) 
         short inputTmp;
         cout << "Input horizontal coordinate for queen on vertical number " << i << ":";
         cin >> inputTmp;
-        pair<short, short> tmpPair {(inputTmp % numOfQueens), i};
+        pair<short, short> tmpPair{(inputTmp % numOfQueens), i};
         result.push_back(tmpPair);
     }
+    return result;
 }
 
-void inputOutputClass::outputList(const vector<pair<short, short>> & result) {
-    for(auto queen : result){
+void inputOutputClass::outputList(const vector<pair<short, short>> &result) {
+    for (auto queen : result) {
         cout << '{' << queen.first << ',' << queen.second << '}' << "   ";
     }
     cout << '\n';
