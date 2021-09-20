@@ -1,5 +1,5 @@
 #include "solution_tree.h"
-#include "iostream"
+#include "input_output_class.h"
 
 int main() {
     vector<pair<short, short>> debugSolution;
@@ -8,8 +8,6 @@ int main() {
     debugRoot->heuristicCalc();
     auto debugTree = new solutionTree(debugRoot);
     auto result = debugTree->findSolutionRBFS();
-    for (auto queen : result) {
-        cout << queen.first << " and " << queen.second << '\n';
-    }
+    
     return 0;
 }
