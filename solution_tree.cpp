@@ -128,6 +128,7 @@ vector<pair<short, short>> solutionTree::recursiveDLS(int depthLimit, solutionNo
 
 solutionTree::solutionTree(solutionNode *rootNode) {
     this->rootNode = rootNode;
+    this->stats = Stats{0, 0, 0, 0};
 }
 
 vector<pair<short, short>> solutionTree::findSolutionIDS() {

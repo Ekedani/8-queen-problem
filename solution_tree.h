@@ -39,9 +39,17 @@ public:
     void clearChildrenVector();;
 };
 
+struct Stats{
+    int iterations;
+    int deadEnds;
+    int totalStates;
+    int memoryStates;
+};
+
 class solutionTree {
 private:
     solutionNode *rootNode;
+    Stats stats;
 
     void deleteSubTree(solutionNode *curNode);
 
@@ -60,4 +68,11 @@ public:
     vector<pair<short, short>> findSolutionIDS();
 
     vector<pair<short, short>> findSolutionRBFS();
+
+    void showStats(){
+        cout << "Iterations: " << stats.iterations << '\n';
+        cout << "Dead-ends: " << stats.deadEnds << '\n';
+        cout << "Total states: " << stats.totalStates << '\n';
+        cout << "States in memory: " << stats.memoryStates << '\n';
+    }
 };
