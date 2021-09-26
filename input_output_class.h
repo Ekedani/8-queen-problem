@@ -21,14 +21,14 @@ public:
                 queens = userInputQueens(numOfQueens);
                 break;
             case 2:
-                queens = {{0, 0},
-                          {0, 1},
-                          {0, 2},
-                          {0, 3},
-                          {0, 4},
-                          {0, 5},
-                          {0, 6},
-                          {0, 7}};
+                queens = {{1, 0},
+                          {4, 1},
+                          {5, 2},
+                          {2, 3},
+                          {7, 4},
+                          {7, 5},
+                          {7, 6},
+                          {6, 7}};
                 break;
             default:
                 queens = generateRandomQueens(numOfQueens);

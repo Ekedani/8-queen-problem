@@ -2,25 +2,26 @@
 #include "input_output_class.h"
 
 int main() {
-    auto debugStart = inputOutputClass::getQueens(8);
+    auto startSet = inputOutputClass::getQueens(8);
     cout << "Start state: " << '\n';
-    inputOutputClass::outputList(debugStart);
+    inputOutputClass::outputList(startSet);
 
-    auto debugRoot = new solutionNode(debugStart);
-    auto debugTree = new solutionTree(debugRoot);
+    auto rootNode = new solutionNode(startSet);
+    auto resultTree = new solutionTree(rootNode);
 
     bool methodChoice;
-    cout << "Input 0 for non-informative and 1 for informative search: "; cin >> methodChoice;
-    vector<pair<short, short>> result;
-    if(methodChoice){
-        result = debugTree->findSolutionRBFS();
-    }
-    else{
-        result = debugTree->findSolutionIDS();
+    cout << "Input 0 for non-informative and 1 for informative search: ";
+    cin >> methodChoice;
+    vector<pair<short, short>> resultState;
+    if (methodChoice) {
+        resultState = resultTree->findSolutionRBFS();
+    } else {
+        resultState = resultTree->findSolutionIDS();
     }
 
     cout << "Result state: " << '\n';
-    inputOutputClass::outputList(result);
-    inputOutputClass::outputTable(result);
+    inputOutputClass::outputList(resultState);
+    inputOutputClass::outputTable(resultState);
+    resultTree->showStats();
     return 0;
 }

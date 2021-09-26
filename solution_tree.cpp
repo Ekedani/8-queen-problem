@@ -88,11 +88,15 @@ void solutionNode::clearChildrenVector() {
 }
 
 vector<pair<short, short>> solutionTree::findSolutionDLS(int depthLimit) {
+    //Statistics
+    stats.iterations++;
     if (rootNode->isSolved()) {
         return rootNode->getState();
     } else {
         if (rootNode->getDepth() < depthLimit) {
             rootNode->generateChildrenNodes();
+            //Statistics
+            stats.totalStates += rootNode->getState().size() * (rootNode->getState().size() - 1);
             vector<solutionNode *> curChildren = rootNode->getChildrenNodes();
             for (auto node : curChildren) {
                 vector<pair<short, short>> solution = recursiveDLS(depthLimit, node);
@@ -107,11 +111,15 @@ vector<pair<short, short>> solutionTree::findSolutionDLS(int depthLimit) {
 }
 
 vector<pair<short, short>> solutionTree::recursiveDLS(int depthLimit, solutionNode *curNode) {
+    //Statistics
+    stats.iterations++;
     if (curNode->isSolved()) {
         return curNode->getState();
     } else {
         if (curNode->getDepth() < depthLimit) {
             curNode->generateChildrenNodes();
+            //Statistics
+            stats.totalStates += rootNode->getState().size() * (rootNode->getState().size() - 1);
             vector<solutionNode *> curChildren = curNode->getChildrenNodes();
             for (auto node : curChildren) {
                 vector<pair<short, short>> solution = recursiveDLS(depthLimit, node);
@@ -120,7 +128,6 @@ vector<pair<short, short>> solutionTree::recursiveDLS(int depthLimit, solutionNo
                 }
             }
         }
-        delete curNode;
         vector<pair<short, short>> noSolution;
         return noSolution;
     }
@@ -128,7 +135,7 @@ vector<pair<short, short>> solutionTree::recursiveDLS(int depthLimit, solutionNo
 
 solutionTree::solutionTree(solutionNode *rootNode) {
     this->rootNode = rootNode;
-    this->stats = Stats{0, 0, 0, 0};
+    this->stats = Stats{0, 0, 1, 1};
 }
 
 vector<pair<short, short>> solutionTree::findSolutionIDS() {
@@ -137,6 +144,7 @@ vector<pair<short, short>> solutionTree::findSolutionIDS() {
         if (!solution.empty()) {
             return solution;
         }
+        stats.memoryStates = 1;
     }
 }
 
@@ -148,6 +156,7 @@ void solutionTree::deleteSubTree(solutionNode *curNode) {
 }
 
 vector<pair<short, short>> solutionTree::recursiveRBFS(solutionNode *curNode, int fLimit) {
+    stats.iterations++;
     if (curNode->isSolved()) {
         return curNode->getState();
     }
@@ -155,6 +164,7 @@ vector<pair<short, short>> solutionTree::recursiveRBFS(solutionNode *curNode, in
         curNode->generateChildrenNodes();
         for (auto node : curNode->getChildrenNodes()) {
             node->heuristicCalc();
+            stats.totalStates++;
         }
     }
     auto tempChildren = curNode->getChildrenNodes();
@@ -166,6 +176,7 @@ vector<pair<short, short>> solutionTree::recursiveRBFS(solutionNode *curNode, in
         solutionNode *bestNode = tempChildren[0];
         auto alternativeLimit = tempChildren[1]->getHeuristicRBFS();
         if (bestNode->getHeuristicRBFS() > fLimit) {
+            stats.deadEnds++;
             curNode->setHeuristicRBFS(bestNode->getHeuristicRBFS());
             for (auto node : curNode->getChildrenNodes()) {
                 deleteSubTree(node);
@@ -182,6 +193,7 @@ vector<pair<short, short>> solutionTree::recursiveRBFS(solutionNode *curNode, in
 }
 
 vector<pair<short, short>> solutionTree::findSolutionRBFS() {
+    stats.iterations++;
     if (rootNode->isSolved()) {
         return rootNode->getState();
     }
@@ -189,6 +201,7 @@ vector<pair<short, short>> solutionTree::findSolutionRBFS() {
         rootNode->generateChildrenNodes();
         for (auto node : rootNode->getChildrenNodes()) {
             node->heuristicCalc();
+            stats.totalStates++;
         }
     }
     auto tempChildren = rootNode->getChildrenNodes();
@@ -204,4 +217,21 @@ vector<pair<short, short>> solutionTree::findSolutionRBFS() {
             return solution;
         }
     }
+}
+
+void solutionTree::countNodesInTree(solutionNode *curNode, int &counter) {
+    counter++;
+    for (auto node : curNode->getChildrenNodes()) {
+        countNodesInTree(node, counter);
+    }
+}
+
+void solutionTree::showStats() {
+    int counter = 0;
+    countNodesInTree(rootNode, counter);
+    stats.memoryStates = counter;
+    cout << "Iterations: " << stats.iterations << '\n';
+    cout << "Dead-ends (for RBFS): " << stats.deadEnds << '\n';
+    cout << "Total states: " << stats.totalStates << '\n';
+    cout << "States in memory: " << stats.memoryStates << '\n';
 }

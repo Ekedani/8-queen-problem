@@ -39,7 +39,7 @@ public:
     void clearChildrenVector();;
 };
 
-struct Stats{
+struct Stats {
     int iterations;
     int deadEnds;
     int totalStates;
@@ -61,6 +61,9 @@ private:
     //Method for RBFS
     vector<pair<short, short>> recursiveRBFS(solutionNode *curNode, int fLimit);
 
+    //Method for statistics
+    void countNodesInTree(solutionNode *curNode, int &counter);
+
 
 public:
     explicit solutionTree(solutionNode *rootNode);
@@ -69,10 +72,5 @@ public:
 
     vector<pair<short, short>> findSolutionRBFS();
 
-    void showStats(){
-        cout << "Iterations: " << stats.iterations << '\n';
-        cout << "Dead-ends: " << stats.deadEnds << '\n';
-        cout << "Total states: " << stats.totalStates << '\n';
-        cout << "States in memory: " << stats.memoryStates << '\n';
-    }
+    void showStats();
 };
